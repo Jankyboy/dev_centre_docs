@@ -1,5 +1,5 @@
 ---
-title: Angular Gauge | FusionCharts
+title: Angular Gauge Charts with FusionCharts Complete Guide
 description: Start with our custom Angular Gauge & create data plots, tooltips, etc. Seamlessly integrated for dynamic web app visualization. Explore more attributes here.
 heading: Angular Gauge
 ---
