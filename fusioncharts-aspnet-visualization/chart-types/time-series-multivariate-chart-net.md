@@ -1,6 +1,6 @@
 ---
 title: Create Multivariate chart | FusionCharts
-description: Read the guide to learn how to create a multivariate chart in FusionCharts. Display Global SuperStore measures across separate canvases.
+description: Read article to learn how to create a multivariate chart in FusionCharts, display the Global SuperStore databases with separate canvases for each measure.
 heading: Create Multivariate chart
 ---
 
