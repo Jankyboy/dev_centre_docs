@@ -14,8 +14,8 @@ heading: FusionExport Release Notes
 
 -  **Enhanced C# compatibility:** This version improves compatibility of the **FusionExport C# Nuget** package with the latest **.NET Framework** versions (6 and above) for modern development environments.
 
-> [!Important] 
-> This release updates the FusionExport SDKs only. The FusionExport Server is still at v2.0 and remains the latest available server version.
+> **Important:**
+> This release updates the FusionExport SDKs only. The FusionExport Server is still at **v2.0** and remains the latest available server version.
 
 <h2 class="sub-heading">v2.0</h2>
 
