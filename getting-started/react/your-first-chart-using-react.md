@@ -2,281 +2,445 @@
 title: Build Interactive Charts in ReactJS with FusionCharts (Step-by-Step Guide)
 description: Want to create stunning and interactive charts in your ReactJS applications?  Learn how to easily integrate FusionCharts with clear step-by-step instructions. Explore various chart types and get started visualizing your data today!
 heading: Create a Chart in React using FusionCharts
-author: sowmya
 ---
 
 ## Introduction
 
-FusionCharts is a JavaScript charting library that enables you to create interactive charts, gauges, maps and dashboards. We have built a simple and lightweight React component that provides bindings for FusionCharts. The `react-fusioncharts` component allows you to easily add rich and interactive charts to any React project.
+FusionCharts is a JavaScript charting library that enables you to create interactive charts, gauges, maps, and dashboards. The lightweight `react-fusioncharts` component provides React bindings for FusionCharts, making it easy to add rich and interactive data visualizations to React applications.
 
-On this page, you'll see how to install FusionCharts and render a chart using the `react-fusionCharts` component.
+In this tutorial, you will create a React application with Vite, install FusionCharts, configure the required dependencies, and render a Column 2D chart using a functional React component.
 
-## Setting up a React project
+## Create a React Project with Vite
 
-Before starting a React project, it's essential to create a setup that streamlines the whole project-making process. One of the best ways to set up the development environment for **charts in Reactjs** is by using create-react-app. Find more about it [here](https://create-react-app.dev/docs/getting-started).
+Before adding FusionCharts, create a React project using Vite, a modern build tool that provides a fast development environment.
 
-After understanding all about using the react app, the next step is to initiate the process. Here are the steps on how you can do it.
-
-Open the terminal, go ahead and enter:
+Open a terminal and run:
 
 ```javascript
-npx create-react-app first-fusioncharts-project
+npm create vite@latest first-fusioncharts-project -- --template react
+```
+
+When prompted to choose a linter, select your preferred option. ESLint is a suitable choice for most React projects.
+
+Navigate to the project directory:
+
+```javascript
 cd first-fusioncharts-project
-npm start
 ```
 
-`first-fusioncharts-project` is the working directory where React Boilerplate will be installed along with all the utilities and dependencies.
-
-<div class="info-box">
-The working directory should contain a `package.json`. If the package is not present, you can create it using the `npm init -y` command.
-<div>
-Now, open [http://localhost:3000/](http://localhost:3000/) to see your React app.
-
-## Installation and including dependencies
-
-Install the react-fusioncharts and fusioncharts modules using the following command:
+Install the project dependencies:
 
 ```javascript
-npm install fusioncharts react-fusioncharts --save
+npm install
 ```
 
-After installing the fusioncharts components, you can replace the code in App.js file with the code shown in the steps below to create your first chart. Import all the required dependencies to get started.
+Start the development server:
 
 ```javascript
-// Step 1 - Include react
-import React from "react";
+npm run dev
+```
 
-// Step 2 - Include the react-fusioncharts component
-import ReactFC from "react-fusioncharts";
+`first-fusioncharts-project` is the working directory in which Vite creates the React project and its required files.
 
-// Step 3 - Include the fusioncharts library
+After the development server starts, open the local URL displayed in the terminal, typically:
+
+```javascript
+http://localhost:5173
+```
+
+You should see the default Vite and React application, confirming that the project has been created successfully.
+
+## Install FusionCharts and React-FusionCharts
+
+Install the `fusioncharts` and `react-fusioncharts` packages:
+
+```javascript
+npm install fusioncharts react-fusioncharts
+```
+
+After installing the packages, configure Vite and import the required FusionCharts dependencies.
+
+## Configure Vite for React-FusionCharts
+
+The `react-fusioncharts` package uses the CommonJS module format. In some Vite versions, this can cause a CommonJS and ES module interoperability issue that produces the following error:
+
+```javascript
+ReactFC.fcRoot is not a function
+```
+
+To prevent this issue, configure Vite to pre-bundle the `react-fusioncharts` and `fusioncharts` packages.
+
+Open `vite.config.js` in the project root and replace its contents with:
+
+```javascript
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  optimizeDeps: {
+    include: ["react-fusioncharts", "fusioncharts"],
+  },
+});
+```
+
+After updating the configuration, stop the development server by pressing `Ctrl + C`.
+
+Clear Vite’s dependency cache:
+
+```javascript
+rm -rf node_modules/.vite
+```
+
+Then restart the development server and force Vite to rebuild the optimized dependencies:
+
+```javascript
+npm run dev -- --force
+```
+
+## Include the Required Dependencies
+
+Open `src/App.jsx` and import the React-FusionCharts component, the FusionCharts library, the chart module, and the Fusion theme:
+
+```javascript
+// Step 1 - Include the required dependencies
+
+// Include the React-FusionCharts component
+import ReactFusionCharts from "react-fusioncharts";
+
+// Include the FusionCharts library
 import FusionCharts from "fusioncharts";
 
-// Step 4 - Include the chart type
-import Column2D from "fusioncharts/fusioncharts.charts";
+// Include the charts module
+import Charts from "fusioncharts/fusioncharts.charts";
 
-// Step 5 - Include the theme as fusion
+// Include the Fusion theme
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
-
-// Step 6 - Adding the chart and theme as dependency to the core fusioncharts
-ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 ```
 
-## Preparing the data
+To handle possible CommonJS and ES module interoperability differences, create a reference to the React-FusionCharts component using a defensive fallback:
+
+```javascript
+const ReactFC =
+  ReactFusionCharts.default || ReactFusionCharts;
+```
+
+Next, register the charts module and theme with FusionCharts:
+
+```javascript
+ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
+```
+
+The complete dependency section should look like this:
+
+```javascript
+// STEP 1 - Include the required dependencies
+
+import ReactFusionCharts from "react-fusioncharts";
+import FusionCharts from "fusioncharts";
+import Charts from "fusioncharts/fusioncharts.charts";
+import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+
+const ReactFC =
+  ReactFusionCharts.default || ReactFusionCharts;
+
+ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
+```
+
+## Preparing the Chart Data
 
 Let's create a chart showing the "Countries With Most Oil Reserves". The data of the oil reserves present in various countries is shown in the tabular form below.
 
-| Country   | No. of Oil Reserves |
-| --------- | ------------------- |
-| Venezuela | 290K                |
-| Saudi     | 260K                |
-| Canada    | 180K                |
-| Iran      | 140K                |
-| Russia    | 115K                |
-| UAE       | 100K                |
-| US        | 30K                 |
-| China     | 30K                 |
+| Country       | No. of Oil Reserves |
+| ------------- | ------------------- |
+| Venezuela     | 290K                |
+| Saudi Arabia  | 260K                |
+| Canada        | 180K                |
+| Iran          | 140K                |
+| Russia        | 115K                |
+| UAE           | 100K                |
+| United States | 30K                 |
+| China         | 30K                 |
 
-Since we are plotting a single dataset, let us create a column 2D chart with 'countries' as data labels along x-axis and 'No. of oil reserves' as data values along y-axis. Let us prepare the data for a single-series chart.
+Because the chart displays a single dataset, you can use a Column 2D chart. The countries appear as labels along the x-axis, while their oil reserves appear as values along the y-axis.
 
-FusionCharts accepts the data in JSON format. So the above data in the tabular form will take the below shape.
+FusionCharts accepts chart data in JSON format. Add the following array to `src/App.jsx`:
 
 ```javascript
-// Preparing the chart data
+// STEP 2 - Prepare the chart data
+
 const chartData = [
   {
     label: "Venezuela",
-    value: "290"
+    value: "290",
   },
   {
-    label: "Saudi",
-    value: "260"
+    label: "Saudi Arabia",
+    value: "260",
   },
   {
     label: "Canada",
-    value: "180"
+    value: "180",
   },
   {
     label: "Iran",
-    value: "140"
+    value: "140",
   },
   {
     label: "Russia",
-    value: "115"
+    value: "115",
   },
   {
     label: "UAE",
-    value: "100"
+    value: "100",
   },
   {
-    label: "US",
-    value: "30"
+    label: "United States",
+    value: "30",
   },
   {
     label: "China",
-    value: "30"
-  }
+    value: "30",
+  },
 ];
 ```
 
-## Configure your chart
+## Configure the chart
 
-Now that the data is ready, let's work on the styling, positioning and giving your **chart in reactjs** a context.
+Create a configuration object that defines the chart type, dimensions, data format, chart properties, and data:
 
 ```javascript
-// Create a JSON object to store the chart configurations
+// STEP 3 - Configure the chart
+
 const chartConfigs = {
-  type: "column2d", // The chart type
-  width: "700", // Width of the chart
-  height: "400", // Height of the chart
-  dataFormat: "json", // Data type
+  type: "column2d",
+  width: "700",
+  height: "400",
+  dataFormat: "json",
   dataSource: {
-    // Chart Configuration
     chart: {
-      caption: "Countries With Most Oil Reserves [2017-18]",    //Set the chart caption
-      subCaption: "In MMbbl = One Million barrels",             //Set the chart subcaption
-      xAxisName: "Country",           //Set the x-axis name
-      yAxisName: "Reserves (MMbbl)",  //Set the y-axis name
+      caption: "Countries With Most Oil Reserves [2017–18]",
+      subCaption: "In MMbbl = One Million Barrels",
+      xAxisName: "Country",
+      yAxisName: "Reserves (MMbbl)",
       numberSuffix: "K",
-      theme: "fusion"                 //Set the theme for your chart
+      theme: "fusion",
     },
-    // Chart Data - from step 2
-    data: chartData
-  }
+    data: chartData,
+  },
 };
 ```
 
-> The 'type' attribute in the chartConfigs object signifies the type of chart being rendered. Have a look at different chart types with their aliases [here](/chart-guide/list-of-charts).
+The main configuration properties are:
+
+- `type` specifies the chart type to render.
+- `width` and `height` define the chart dimensions.
+- `dataFormat` specifies the format of the supplied data.
+- `dataSource` contains the chart settings and data.
+- `theme` applies the Fusion theme.
+
+The `column2d` value tells FusionCharts to render a Column 2D chart. You can replace it with another supported chart alias to render a different [chart type](/chart-guide/list-of-charts).
 
 ## Render the chart
 
-Get ready to render your first chart finally. Use this consolidated code shown below:
+Create a functional React component and pass the chart configuration to the ReactFC component:
 
 ```
-// STEP 1 - Include Dependencies
-// Include react
-import React from "react";
-import ReactDOM from "react-dom";
+// STEP 4 - Render the chart
 
-// Include the react-fusioncharts component
-import ReactFC from "react-fusioncharts";
-
-// Include the fusioncharts library
-import FusionCharts from "fusioncharts";
-
-// Include the chart type
-import Column2D from "fusioncharts/fusioncharts.charts";
-
-// Include the theme as fusion
-import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
-
-// Adding the chart and theme as dependency to the core fusioncharts
-ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
-
-// STEP 2 - Chart Data
-const chartData = [
-  {
-    label: "Venezuela",
-    value: "290"
-  },
-  {
-    label: "Saudi",
-    value: "260"
-  },
-  {
-    label: "Canada",
-    value: "180"
-  },
-  {
-    label: "Iran",
-    value: "140"
-  },
-  {
-    label: "Russia",
-    value: "115"
-  },
-  {
-    label: "UAE",
-    value: "100"
-  },
-  {
-    label: "US",
-    value: "30"
-  },
-  {
-    label: "China",
-    value: "30"
-  }
-];
-
-// STEP 3 - Creating the JSON object to store the chart configurations
-const chartConfigs = {
-  type: "column2d", // The chart type
-  width: "700", // Width of the chart
-  height: "400", // Height of the chart
-  dataFormat: "json", // Data type
-  dataSource: {
-    // Chart Configuration
-    chart: {
-      //Set the chart caption
-      caption: "Countries With Most Oil Reserves [2017-18]",
-      //Set the chart subcaption
-      subCaption: "In MMbbl = One Million barrels",
-      //Set the x-axis name
-      xAxisName: "Country",
-      //Set the y-axis name
-      yAxisName: "Reserves (MMbbl)",
-      numberSuffix: "K",
-      //Set the theme for your chart
-      theme: "fusion"
-    },
-    // Chart Data
-    data: chartData
-  }
-};
-
-// STEP 4 - Creating the DOM element to pass the react-fusioncharts component
-class App extends React.Component {
-  render() {
-    return (<ReactFC {...chartConfigs} />);
-  }
+function App() {
+  return <ReactFC {...chartConfigs} />;
 }
 
 export default App;
 ```
 
-## See your chart
+## Complete src/App.jsx Code
 
-You should be able to see the chart as shown below.
+Replace the contents of `src/App.jsx` with the following code:
+
+```javascript
+// STEP 1 - Include the required dependencies
+
+import ReactFusionCharts from "react-fusioncharts";
+import FusionCharts from "fusioncharts";
+import Charts from "fusioncharts/fusioncharts.charts";
+import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+
+const ReactFC =
+  ReactFusionCharts.default || ReactFusionCharts;
+
+// Register the charts module and theme with FusionCharts
+ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
+
+// STEP 2 - Prepare the chart data
+
+const chartData = [
+  {
+    label: "Venezuela",
+    value: "290",
+  },
+  {
+    label: "Saudi Arabia",
+    value: "260",
+  },
+  {
+    label: "Canada",
+    value: "180",
+  },
+  {
+    label: "Iran",
+    value: "140",
+  },
+  {
+    label: "Russia",
+    value: "115",
+  },
+  {
+    label: "UAE",
+    value: "100",
+  },
+  {
+    label: "United States",
+    value: "30",
+  },
+  {
+    label: "China",
+    value: "30",
+  },
+];
+
+// STEP 3 - Configure the chart
+
+const chartConfigs = {
+  type: "column2d",
+  width: "700",
+  height: "400",
+  dataFormat: "json",
+  dataSource: {
+    chart: {
+      caption: "Countries With Most Oil Reserves [2017–18]",
+      subCaption: "In MMbbl = One Million Barrels",
+      xAxisName: "Country",
+      yAxisName: "Reserves (MMbbl)",
+      numberSuffix: "K",
+      theme: "fusion",
+    },
+    data: chartData,
+  },
+};
+
+// STEP 4 - Render the chart using a functional component
+
+function App() {
+  return <ReactFC {...chartConfigs} />;
+}
+
+export default App;
+```
+
+## View the chart
+
+Ensure the development server is running:
+
+```javascript
+npm run dev
+```
+
+Open the local URL displayed in the terminal, typically:
+
+```javascript
+http://localhost:5173
+```
+
+You should now see the Column 2D chart showing the oil reserves for each country.
+
+Your first React chart using FusionCharts is now ready.
 
 {% embed_chart getting-started-your-first-chart.js %}
 
-If you are getting a JavaScript error on your page, check your browser console for the exact error and fix accordingly. If you're unable to solve it, click [here](mailto:support@fusioncharts.com) to get in touch with our support team.
+## Troubleshooting
+
+If you encounter a JavaScript error while running the application, open your browser's developer tools and check the **Console** tab for the exact error message.
+
+If you're using **Vite** and receive the following error:
+
+```javascript
+ReactFC.fcRoot is not a function
+```
+
+Make sure you have:
+
+- Added the `optimizeDeps.include` configuration to your `vite.config.js` file.
+- Configured the defensive import for `react-fusioncharts` as described in this tutorial.
+- Cleared Vite's dependency cache and restarted the development server using:
+
+```javascript
+rm -rf node_modules/.vite
+npm run dev -- --force
+```
+
+
+If you're unable to resolve the issue, please contact the FusionCharts [Support Team](mailto:support@fusioncharts.com).
 
 That's it! Your first chart using `react-fusioncharts` is ready.
 
-## Enhance Your Charts in Reactjs with FusionCharts
+## Enhance Your React Applications with FusionCharts
 
-FusionCharts emerges as the ultimate solution for developers searching to harness the power of data visualization in ReactJS applications. Its seamless integration with React through the react-fusion charts component empowers developers to create stunning and interactive **charts in Reactjs** effortlessly. With unparalleled customization options, export capabilities, and seamless integration, FusionCharts is your go-to platform for transforming simple data comparable charts.
+FusionCharts makes it easy to build interactive, responsive, and visually appealing charts in React applications. With the lightweight **react-fusioncharts** component, you can seamlessly integrate over 100 chart types, maps, and specialized visualizations into your projects.
 
-_Don't miss out on the opportunity to transform your data into actionable insights with FusionCharts. Explore FusionCharts now and take your data visualization to new heights!_
+FusionCharts provides powerful features, including:
+
+- Extensive chart customization.
+- Interactive tooltips and drill-down capabilities.
+- Built-in exporting to PNG, JPEG, SVG, and PDF.
+- Responsive layouts.
+- Cross-browser compatibility.
+- Rich themes and styling options.
+
+Whether you're building dashboards, business intelligence applications, or data-driven web apps, FusionCharts helps you transform raw data into meaningful visual insights.
+
+Explore FusionCharts and discover how you can build beautiful data visualizations with minimal effort.
 
 ## Transform Your React Projects with FusionCharts
 
-Ready to add interactive charts to your React projects? Get started with FusionCharts today! Visit our website to explore our documentation, tutorials, and examples. Unleash the power of data visualization in your applications.
+Ready to build interactive charts in your React applications?
 
-_Get started with FusionCharts._
+Explore the FusionCharts documentation, examples, and API reference to learn more about creating powerful data visualizations.
+
+**Next steps:**
+
+- Browse all available chart types.
+- Learn about chart customization options.
+- Explore advanced features such as drill-down, real-time charts, annotations, exporting, and events.
+- Build interactive dashboards for your React applications.
+
+[Get started with FusionCharts today](https://resources.fusioncharts.com/download-free-trial/).
+
 
 ## FAQs
 
-### Can I customize the appearance of FusionCharts in my React project?
-Yes, you can customize various aspects of <strong>charts in reactjs</strong> with FusionCharts, such as colors, fonts, tooltips, and animations, to match the design of your react application. Refer to our documentation for detailed customization options.
+### Can I customize the appearance of FusionCharts in my React application?
+Yes. FusionCharts provides extensive customization options, allowing you to modify colors, fonts, themes, labels, tooltips, legends, animations, and many other visual elements to match the design of your React application.
 
 ### Can I export FusionCharts as images or PDFs from my React application?
-FusionCharts provides built-in support for exporting charts as images (PNG, JPEG) or PDF documents directly from the browser. You can enable export functionality with a few simple configurations.
+Yes. FusionCharts includes built-in export functionality that allows users to export charts as PNG, JPEG, SVG, or PDF files directly from the browser with minimal configuration.
 
 ### How do I troubleshoot JavaScript errors with FusionCharts?
-Check your browser console for exact error messages if you encounter JavaScript errors while using FusionCharts. For common issues and solutions, refer to our troubleshooting guide.
+Start by checking your browser's developer console for the exact error message.
 
-### Can I integrate FusionCharts with state management libraries like Redux in React?
-Yes, you can integrate FusionCharts with state management libraries like Redux to manage the state of your <strong>charts in reactjs</strong> within a React application. Check out our documentation for examples and best practices.
+If you're using Vite and encounter the error:
+
+```javascript
+ReactFC.fcRoot is not a function
+```
+
+Follow the Vite configuration steps described in this tutorial to resolve the CommonJS and ES module interoperability issue.
+
+For additional help, refer to the [FusionCharts documentation](https://www.fusioncharts.com/dev/) or contact the [FusionCharts Support Team](mailto:support@fusioncharts.com).
+
+### Can I integrate FusionCharts with state management libraries like Redux?
+Yes. FusionCharts works seamlessly with React state management libraries such as Redux, Context API, Zustand, MobX, and others. You can dynamically update chart data and configuration based on your application's state.
+
+### Is FusionCharts compatible with React 19 and Vite?
+Yes. FusionCharts works with React 19 and Vite. If you're using newer versions of Vite, configure the `optimizeDeps.include` option as shown in this guide to ensure proper compatibility with the `react-fusioncharts` package.
