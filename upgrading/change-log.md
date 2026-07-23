@@ -1,5 +1,5 @@
 ---
-title: Full Changelog & Version History | FusionCharts
+title: FusionCharts Change Log Documentation Guide Today
 description: Stay updated with the FusionCharts Change Log. Track new features, improvements, and bug fixes in every release to keep your projects running smoothly.
 heading: Version 4.2.x
 ---
