@@ -1,5 +1,5 @@
 ---
-title: Events | FusionCharts
+title: FusionCharts Events, Webinars and Conferences Guide
 description: Discover the power of events in executing actions & manipulating the DOM with our comprehensive guide on event triggers for chart rendering & interaction.
 heading: Events
 ---
