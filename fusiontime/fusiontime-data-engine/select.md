@@ -1,5 +1,5 @@
 ---
-title: Select | FusionCharts
+title: FusionCharts Select Feature Guide for Better Charts Now
 description: Utilize the Select operation to display specific columns of the DataTable. Explore our article and discover more about the Select operation in Data AI.
 heading: Select
 ---
