@@ -1,5 +1,5 @@
 ---
-title: FusionCharts Dev Centre for Developers and Resources
+title: FusionTime Attributes Documentation Guide for Devs
 description: Explore the distinct attributes of FusionTime components through this detailed compilation that offers a comprehensive overview of the website's offerings.
 heading: Attributes
 ---
