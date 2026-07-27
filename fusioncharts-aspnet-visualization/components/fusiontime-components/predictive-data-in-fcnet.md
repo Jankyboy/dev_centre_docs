@@ -1,5 +1,5 @@
 ---
-title: Pyramid Chart for Predictive Data Representation | FusionCharts
+title: Pyramid Charts for Predictive Data Visualization Guide
 description: Explore FusionTime's predictive data representation for ASP.NET, offering intuitive control over date ranges for dynamic data visualization. Learn more now
 heading: Predictive data representation
 ---
