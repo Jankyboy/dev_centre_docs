@@ -1,5 +1,5 @@
 ---
-title: Standard Range Selector | FusionCharts
+title: FusionTime Standard Range Selector Documentation Guide
 description: Discover FusionTime's standard range selector for powerful data visualization. Integrate interactive date controls & elevate your web apps. Get started now
 heading: Standard Range Selector
 ---
