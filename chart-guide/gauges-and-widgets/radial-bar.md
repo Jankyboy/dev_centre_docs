@@ -1,5 +1,5 @@
 ---
-title: Radial Bar | FusionCharts
+title: Radial Bar Charts with FusionCharts Developer Guide
 description: Radial Bar charts use a polar coordinate system to compare categories in a circular layout, offering an engaging alternative to traditional bar charts.
 heading: Radial Bar
 ---
