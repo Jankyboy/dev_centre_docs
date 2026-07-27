@@ -1,5 +1,5 @@
 ---
-title: Transform Data Visualization with Heatmap Chart by Fusion Charts
+title: Heatmap Charts for Better Data Visualization Insights
 description: Unleash the power of color with heatmap charts by FusionCharts. Turn complex data into clear & compelling insights. Stop waiting, transform your data now!
 heading: Heat Map Chart
 ---
