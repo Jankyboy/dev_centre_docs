@@ -1,5 +1,5 @@
 ---
-title: Time Axis | FusionCharts
+title: FusionCharts Time Axis Configuration Guide for Charts
 description: Discover FusionTime's time axis for powerful data visualization. Integrate interactive date controls & elevate your web apps. Get started now!
 heading: Time Axis
 ---
