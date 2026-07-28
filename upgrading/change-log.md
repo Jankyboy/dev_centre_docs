@@ -1,6 +1,6 @@
 ---
 title: FusionCharts Change Log Documentation Guide Today
-description: FusionCharts changelog: Detailed release notes covering new features, bug fixes and enhancements across every version of FusionCharts for your dashboard.
+description: 'FusionCharts changelog: Detailed release notes covering new features, bug fixes and enhancements across every version of FusionCharts for your dashboard.'
 heading: Version 4.2.x
 ---
 
