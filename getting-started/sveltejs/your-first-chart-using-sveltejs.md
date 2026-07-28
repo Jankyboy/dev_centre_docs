@@ -1,33 +1,38 @@
 ---
-title: Create a Chart in SvelteJS Using FusionCharts | FusionCharts
+title: Create a Chart in Svelte Using FusionCharts | FusionCharts
 description: This article outlines the steps to be executed for creating your first chart using the svelte-fusioncharts component.
 heading: Create a Chart in SvelteJS Using FusionCharts
 ---
 
-FusionCharts is a JavaScript charting library that lets you create interactive charts, gauges, maps, and dashboards using JavaScript. We have built a simple and lightweight SvelteJS directive, which provides bindings for `svelte-fusioncharts` and lets you add JavaScript charts in your Svelte application or project without any hassle.
+FusionCharts is a JavaScript charting library that lets you create interactive charts, gauges, maps, and dashboards for web applications. 
 
-In this page, you will see how to install FusionCharts and render a chart using the `svelte-fusioncharts` directive.
+The `svelte-fusioncharts` component provides bindings for FusionCharts, allowing you to integrate FusionCharts visualizations into Svelte applications.
+
+In this tutorial, you will learn how to create a Svelte 4 application, install FusionCharts and the Svelte FusionCharts component, prepare chart data, configure a chart, and render your first interactive chart.
 
 ## Prerequisite
 
-Before you begin, make sure your development environment includes `Node.js` and an `npm package manager`. SvelteJS requires Node.js version **10.9.0** or later. To download and install Node.js, please visit [nodejs.org](https://nodejs.org/).
+Before you begin, ensure the following is installed:
+* [Node.js](https://nodejs.org/)
+* [npm](https://www.npmjs.com/)
 
-You need to have a Svelte project set up before proceeding any further. If not, you can follow the steps mentioned below, to initiate the project.
-
-Open a new terminal and execute the following command:
-
-```javascript
-npx degit sveltejs/template my-first-svelte-project
-```
-
-The above command creates a new project folder named `my-first-svelte-project`, and downloads the svelte default project template into that folder. Before running the project, we need to make sure that all needed development dependencies are being installed.
+You can check the installed version by running the following command:
 
 ```javascript
-cd my-first-svelte-project
-npm install
+node -v
+npm -v
+```
+This tutorial uses the following versions:
+
+```javascript
+Svelte: 4.0.0
+FusionCharts: 4.2.2 
+svelte-fusioncharts: 1.1.0
+Vite: 4.5.14
+@sveltejs/vite-plugin-svelte: 2.4.6
 ```
 
-Open the terminal and enter `npm run dev` to serve your app on [localhost:5000](http://localhost:5000/).
+> Note: Svelte 4.0.0 is the latest version of Svelte currently supported by FusionCharts.
 
 ## Installing and Including Dependencies
 
