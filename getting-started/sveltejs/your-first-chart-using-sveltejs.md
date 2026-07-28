@@ -34,73 +34,207 @@ Vite: 4.5.14
 
 > Note: Svelte 4.0.0 is the latest version of Svelte currently supported by FusionCharts.
 
-## Installing and Including Dependencies
+## Create a Svelte Project
 
-To install `fusioncharts` and the `svelte-fusioncharts` directive via npm follow the steps below:
-
-Install `svelte-fusioncharts` and `fusioncharts` libraries with the following command:
+Create a Svelte application using Vite, see the command below as an example:
 
 ```javascript
-npm install svelte-fusioncharts fusioncharts --save
+npm create vite@4 my-first-svelte-project -- --template svelte
+```
+Navigate to the project directory using the following command:
+
+```javascript
+cd my-first-svelte-project
+```
+The latest Svelte project templates may use dependencies or application code designed for newer versions of Svelte. Since this tutorial uses Svelte 4.0.0, update the project dependencies to versions compatible with it.
+
+Open `package.json` and update the `devDependencies` section as follows:
+
+```javascript
+"devDependencies": {
+  "@sveltejs/vite-plugin-svelte": "2.4.6",
+  "svelte": "4.0.0",
+  "vite": "4.5.14"
+}
+```
+The complete `package.json` should look as follows:
+
+```javascript
+{
+  "name": "my-first-svelte-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "2.4.6",
+    "svelte": "4.0.0",
+    "vite": "4.5.14"
+  }
+}
+```
+Remove the existing dependencies and lock file:
+
+```javascript
+rm -rf node_modules package-lock.json
+```
+Then install the dependencies as follows:
+
+```javascript
+npm install
 ```
 
-After installing the FusionCharts components, you can replace the code in `App.svelte` file with the code shown in the steps below to create your first chart. Import all the required dependencies in the &lt;script&gt; tag to get started.
+## Configure the Svelte 4 Entry Point
 
-```html
+Newer Svelte templates may use the Svelte 5 `mount()` API. Svelte 4 uses the component constructor instead.
+
+Open the file:
+
+```javascript
+src/main.js
+```
+
+and replace its content with the one below:
+
+```javascript
+import './app.css'
+import App from './App.svelte'
+
+const target = document.getElementById('app')
+
+if (!target) {
+  throw new Error('App target element not found')
+}
+
+const app = new App({
+  target,
+})
+
+export default app
+```
+This mounts the Svelte application to the element with the `app` ID in the `index.html` file.
+
+## Remove the Default Svelte 5 Example Component
+
+Some Vite Svelte templates may include example components that use Svelte 5 syntax. It is necessary to remove them.
+
+Open:
+
+```javascript
+src/App.svelte
+```
+and remove any default imports or components such as:
+
+```javascript
+import Counter from './lib/Counter.svelte'
+```
+You may also remove the default `Counter.svelte` file if it exists. 
+
+Before continuing, verify that Svelte 4 is working by temporarily using:
+
+```javascript
 <script>
-  //Import the Fusioncharts library
-  import FusionCharts from "fusioncharts";
+  let message = 'Svelte 4 is working'
+</script>
 
-  //Import the chart modules
-  import Charts from "fusioncharts/fusioncharts.charts";
+<main>
+  <h1>{message}</h1>
+</main>
+```
+Start the development server:
 
-  //Import the theme as fusion
-  import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+```javascript
+npm run dev
+```
+Open the local URL displayed in your terminal, most likely:
 
-  //Import the Svelte component
-  import SvelteFC, { fcRoot } from "svelte-fusioncharts";
+```javascript
+http://localhost:5173
+```
+And you should see the following message:
 
-  // Always set FusionCharts as the first parameter
-  fcRoot(FusionCharts, Charts, FusionTheme);
+```javascript
+Svelte 4 is working
+```
+
+## Install FusionCharts
+
+After confirming that the Svelte 4 application works, install FusionCharts and the Svelte FusionCharts component:
+
+```javascript
+npm install fusioncharts svelte-fusioncharts
+```
+You can verify the installed versions using the following command:
+
+```javascript
+npm list svelte fusioncharts svelte-fusioncharts
+```
+The tested configuration should show the following:
+
+```javascript
+svelte@4.0.0
+fusioncharts@4.2.2
+svelte-fusioncharts@1.1.0
+```
+
+## Import FusionCharts
+
+To import FusionCharts, first open:
+
+```javascript
+src/App.svelte
+```
+Using the following command import FusionCharts, the charts module, the Fusion theme, and the Svelte FusionCharts component:
+
+```javascript
+<script>
+  import FusionCharts from 'fusioncharts'
+  import Charts from 'fusioncharts/fusioncharts.charts'
+  import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion'
+  import SvelteFC, { fcRoot } from 'svelte-fusioncharts'
+
+  fcRoot(FusionCharts, Charts, FusionTheme)
 </script>
 ```
-
-That completes the installation of FusionCharts and the `svelte-fusioncharts` directive.
+The `fcRoot()` function registers FusionCharts, the chart module, and the Fusion theme with the Svelte component.
 
 ## Preparing the Data
 
-Let's create a chart showing the "Countries with Most Oil Reserves". The data of the oil reserves present in various countries is shown in tabular form below.
+In this example, you will create a Column 2D chart showing revenue by product category. The data used in the chart is shown below:
 
-| Country   | No. of Oil Reserves |
-| --------- | ------------------- |
-| Venezuela | 290K                |
-| Saudi     | 260K                |
-| Canada    | 180K                |
-| Iran      | 140K                |
-| Russia    | 115K                |
-| UAE       | 100K                |
-| US        | 30K                 |
-| China     | 30K                 |
+| Product Category | Revenue |
+| ---------------- | ------- |
+| Electronics      | 85      |
+| Apparel          | 72      |
+| Home Appliances  | 64      |
+| Books            | 48      |
+| Sports           | 55      |
+| Beauty           | 42      |
 
-Since we are plotting a single dataset, let us create a column 2D chart with 'Countries' as data labels along X-axis and 'No. of Oil Reserves' as data values along Y-axis. Let us prepare the data for a single-series chart.
+FusionCharts accepts chart data in JSON format.
 
-FusionCharts accepts the data in JSON format. Include the data object in the &lt;script&gt; tag of `App.svelte` file. So the above data in the tabular form will look as follows:
+Next, add the following data inside the `<script>` block:
 
 ```javascript
 // Preparing the chart data
 const chartData = [
-  { label: "Venezuela", value: "290" },
-  { label: "Saudi", value: "260" },
-  { label: "Canada", value: "180" },
-  { label: "Iran", value: "140" },
-  { label: "Russia", value: "115" },
-  { label: "UAE", value: "100" },
-  { label: "US", value: "30" },
-  { label: "China", value: "30" }
+  { label: 'Electronics', value: '85' },
+  { label: 'Apparel', value: '72' },
+  { label: 'Home Appliances', value: '64' },
+  { label: 'Books', value: '48' },
+  { label: 'Sports', value: '55' },
+  { label: 'Beauty', value: '42' }
 ];
 ```
+Each data object contains:
+* `label`: The category displayed on the X-axis.
+* `value`: The corresponding value displayed on the Y-axis.
 
-## Configure Your Chart
+## Configure the Chart
 
 Now that the data is ready, let's work on the styling, positioning and giving your chart a context.
 
