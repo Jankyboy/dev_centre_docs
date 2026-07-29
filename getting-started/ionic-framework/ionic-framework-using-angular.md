@@ -17,7 +17,7 @@ Before you begin, make sure you have the following installed on your system:
 - **Node.js**
 - **npm**, which is included with Node.js
 - A modern web browser such as Google Chrome
-- 
+
 You can verify your Node.js and npm installations by running:
 
 ```javascript
