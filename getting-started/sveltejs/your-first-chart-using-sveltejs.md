@@ -32,7 +32,8 @@ Vite: 4.5.14
 @sveltejs/vite-plugin-svelte: 2.4.6
 ```
 
-> Note: Svelte 4.0.0 is the latest version of Svelte currently supported by FusionCharts.
+> **Note:**
+> Svelte 4.0.0 is the latest version of Svelte currently supported by FusionCharts.
 
 ## Create a Svelte Project
 
@@ -116,7 +117,7 @@ const app = new App({
 
 export default app
 ```
-This mounts the Svelte application to the element with the `app` ID in the `index.html` file.
+This mounts the Svelte application to the element with the `app` ID in `index.html`.
 
 ## Remove the Default Svelte 5 Example Component
 
@@ -236,106 +237,141 @@ Each data object contains:
 
 ## Configure the Chart
 
-Now that the data is ready, let's work on the styling, positioning and giving your chart a context.
-
-Store the chart configurations in a JSON object. In this JSON object:
+Next, create the chart configuration object as follows:
 
 ```javascript
 //Create your configuration object
 const chartConfigs = {
-  type: "column2d", //Select the chart type
-  width: 600, //Set the width of the chart
-  height: 400, //Set the height of the chart
-  dataFormat: "json", //Set the input dataFormat to json
+  type: 'column2d',
+  width: '100%',
+  height: '400',
+  dataFormat: 'json',
   dataSource: {
     chart: {
-      caption: "Countries With Most Oil Reserves [2017-18]", //Set the caption to your chart
-      subCaption: "In MMbbl = One Million Barrels", //Set a sub-caption to your chart
-      xAxisName: "Country", //Assign a relevant name to your x-axis
-      yAxisName: "Reserves (MMbbl)", //Assign a relevant name to your y-axis
-      numberSuffix: "K",
-      theme: "fusion" //Apply a theme to your chart
+      caption: 'Revenue by Product Category',
+      subCaption: 'Current Sales Performance',
+      xAxisName: 'Product Category',
+      yAxisName: 'Revenue (USD)',
+      numberPrefix: '$',
+      numberSuffix: 'K',
+      theme: 'fusion'
     },
-    //Include chartData from STEP 2
     data: chartData
   }
 };
 ```
+The configuration contains the following properties:
+* `type`: Specifies the chart type. This example uses `column2d`.
+* `width`: Sets the chart width to 100% of its container.
+* `height`: Sets the chart height.
+* `dataFormat`: Defines the data format as JSON.
+* `dataSource`: Contains the chart configuration and chart data.
+* `caption`: Defines the chart title.
+* `subCaption`: Defines the chart subtitle.
+* `xAxisName`: Defines the X-axis title.
+* `yAxisName`: Defines the Y-axis title.
+* `theme`: Applies the Fusion theme.
 
 ## Render the Chart
 
-Finally, get ready to render your first chart. Follow the steps mentioned below:
+Finally, the complete `src/App.svelte` file should look as follows: 
 
-**Step 1**: In `App.svelte` include the necessary files and import the `fusioncharts` dependency.
-
-Store the chart configurations in a JSON object.
-
-The consolidated code is shown below:
-
-```html
+```javascript
 <script>
-  import FusionCharts from "fusioncharts";
-  import Charts from "fusioncharts/fusioncharts.charts";
-  import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
-  import SvelteFC, { fcRoot } from "svelte-fusioncharts";
+  import FusionCharts from 'fusioncharts'
+  import Charts from 'fusioncharts/fusioncharts.charts'
+  import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion'
+  import SvelteFC, { fcRoot } from 'svelte-fusioncharts'
 
-  // Always set FusionCharts as the first parameter
-  fcRoot(FusionCharts, Charts, FusionTheme);
-  //STEP 2 : preparing the chart Data
+  fcRoot(FusionCharts, Charts, FusionTheme)
+
   const chartData = [
-    { label: "Venezuela", value: "290" },
-    { label: "Saudi", value: "260" },
-    { label: "Canada", value: "180" },
-    { label: "Iran", value: "140" },
-    { label: "Russia", value: "115" },
-    { label: "UAE", value: "100" },
-    { label: "US", value: "30" },
-    { label: "China", value: "30" }
-  ];
+    { label: 'Electronics', value: '85' },
+    { label: 'Apparel', value: '72' },
+    { label: 'Home Appliances', value: '64' },
+    { label: 'Books', value: '48' },
+    { label: 'Sports', value: '55' },
+    { label: 'Beauty', value: '42' }
+  ]
 
-  //STEP 3: Create your configuration object
   const chartConfigs = {
-    type: "column2d", //Select the chart type
-    width: 600, //Set the width of the chart
-    height: 400, //Set the height of the chart
-    dataFormat: "json", //Set the input dataFormat to json
+    type: 'column2d',
+    width: '100%',
+    height: '400',
+    dataFormat: 'json',
     dataSource: {
       chart: {
-        caption: "Countries With Most Oil Reserves [2017-18]",
-        subCaption: "In MMbbl = One Million barrels",
-        xAxisName: "Country", //Assign a relevant name to your x-axis
-        yAxisName: "Reserves (MMbbl)", //Assign a relevant name to your y-axis
-        numberSuffix: "K",
-        theme: "fusion" //Apply a theme to your chart
+        caption: 'Revenue by Product Category',
+        subCaption: 'Current Sales Performance',
+        xAxisName: 'Product Category',
+        yAxisName: 'Revenue (USD)',
+        numberPrefix: '$',
+        numberSuffix: 'K',
+        theme: 'fusion'
       },
-      //Include chartData from STEP 2
       data: chartData
     }
-  };
+  }
 </script>
 
+<main>
+  <div class="chart-container">
+    <SvelteFC {...chartConfigs} />
+  </div>
+</main>
+
+<style>
+  main {
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  .chart-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+</style>
+```
+
+The `SvelteFC`component receives the chart properties using the following command: 
+
+```javascript
 <SvelteFC {...chartConfigs} />
 ```
 
-**Step 2**: Export the **app** from `main.js`.
+and renders the FusionCharts visualization.
+
+## Run the Application
+
+Start the development server, as follows:
 
 ```javascript
-import App from "./App.svelte";
-var app = new App({
-  target: document.body
-});
-
-export default app;
+npm run dev
 ```
+Open the local URL shown in the terminal, most likely:
 
-**Step 3**: Run `npm run dev` command in the terminal. Once the build is successful, open the `localhost` file to see your chart.
+```javascript
+http://localhost:5173
+```
+An interactive Column 2D chart should be visible and display the revenue by product category.
 
 ## See Your Chart
 
-You should be able to see the chart as shown below.
+Your Svelte application is now successfully rendering a FusionCharts visualization.
 
-{% embed_chart getting-started-your-first-chart.js %}
+{% embed_chart getting-started-your-first-chart-svelte.js %}
 
-If you are getting a JavaScript error on your page, check your browser console for the exact error and fix accordingly. If you're unable to solve it, click [here](mailto:support@fusioncharts.com) to get in touch with our support team.
+The chart displays revenue for six product categories using a responsive Column 2D chart.
 
-That's it! Your first chart using `svelte-fusioncharts` is ready.
+Customize the chart by changing any of the following:
+* Chart type
+* Chart dimensions
+* Data
+* Captions
+* Axis titles
+* Theme
+* Styling
+* Events and interactions
+
