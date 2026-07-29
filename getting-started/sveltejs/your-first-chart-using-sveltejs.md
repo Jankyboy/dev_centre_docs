@@ -375,3 +375,170 @@ Customize the chart by changing any of the following:
 * Styling
 * Events and interactions
 
+## Troubleshooting
+
+This section mentions several common issues and how to troubleshoot them. 
+
+### Unrecognized Option `hmr`
+
+It is possible to encounter an error such as:
+
+```javascript
+[plugin:vite-plugin-svelte] Unrecognized option 'hmr'
+```
+
+This usually occurs when Svelte 4.0.0 is used with a newer incompatible version of `@sveltejs/vite-plugin-svelte`.
+
+Ensure that your project uses the following:
+
+```javascript
+@sveltejs/vite-plugin-svelte@2.4.6
+vite@4.5.14
+svelte@4.0.0
+```
+You can verify the versions with the following command:
+
+```javascript
+npm list svelte vite @sveltejs/vite-plugin-svelte
+```
+
+### `svelte` Does Not Provide an Export Named `mount`
+
+It is possible to encounter an error such as:
+
+```javascript
+The requested module 'svelte' does not provide an export named 'mount'
+```
+This occurs when the project uses Svelte 5 mounting syntax with Svelte 4. 
+
+To solve this, replace:
+
+```javascript
+import { mount } from 'svelte'
+```
+with the Svelte 4 component constructor approach:
+
+```javascript
+const app = new App({
+  target,
+})
+```
+
+### Undefined state
+
+If the browser console shows the following message:
+
+```javascript
+ReferenceError: state is not defined
+```
+The project may still contain example components generated for a newer version of Svelte.
+
+Remove the default `Counter.svelte` component and any related imports from `App.svelte`.
+
+### Failed to Resolve `Counter.svelte`
+
+If your screen displays the following message:
+
+```javascript
+Failed to resolve import "./lib/Counter.svelte"
+```
+Then, remove the following import from `App.svelte`:
+
+```javascript
+import Counter from './lib/Counter.svelte'
+```
+Finally, ensure to remove any `<Counter />` component references.
+
+### Verify the Install Versions
+
+To verify the installed versions, run:
+
+```javascript
+npm list svelte fusioncharts svelte-fusioncharts
+```
+The tested setup uses:
+
+```javascript
+svelte@4.0.0
+fusioncharts@4.2.2
+svelte-fusioncharts@1.1.0
+```
+
+## Restart the Development Server
+
+After changing dependencies or source files, stop the current development server and restart it with the following command:
+
+```javascript
+npm run dev
+```
+
+## What's Next?
+
+Now that you have successfully integrated FusionCharts with Svelte, you can explore additional FusionCharts capabilities.
+You can:
+* Try different [chart types](/chart-guide/list-of-charts).
+* Customize chart appearance.
+* Add [chart events](/advanced-chart-configurations/events/handling-events) and interactions.
+* Load dynamic data.
+* Create [dashboards](https://www.fusioncharts.com/dashboards/) with multiple charts.
+* Explore [gauges](/chart-guide/gauges-and-widgets/angular-gauge) and [maps](/map-guide/list-of-maps).
+* Configure advanced chart properties.
+
+## Enhance your Svelte Applications with FusionCharts
+
+FusionCharts provides a wide range of interactive charts, maps, gauges, and visualization components for creating data-driven Svelte applications.
+
+Whether you are building a simple visualization or an enterprise dashboard, FusionCharts offers configurable options to meet diverse application requirements.
+
+## Get Started with FusionCharts
+
+Explore the FusionCharts [documentation](https://www.fusioncharts.com/dev/) to learn more about available chart types, configuration options, methods, events, themes, and advanced data visualization features.
+
+You can also [download FusionCharts and start a free trial](https://resources.fusioncharts.com/download-free-trial/) to explore its complete range of capabilities.
+
+## Frequently Asked Questions
+
+### Can I use FusionCharts with Svelte?
+
+Yes. FusionCharts can be integrated with Svelte applications using the `svelte-fusioncharts` component.
+
+### Which Svelte version does FusionCharts support?
+
+FusionCharts currently supports **Svelte 4.0.0** as the latest supported Svelte version
+
+### Which versions were tested for this tutorial?
+
+This tutorial was tested using:
+
+```javascript
+Svelte 4.0.0
+FusionCharts 4.2.2
+svelte-fusioncharts 1.1.0
+Vite 4.5.14
+@sveltejs/vite-plugin-svelte 2.4.6
+```
+
+### How do I install FusionCharts in a Svelte application?
+
+Install FusionCharts and the Svelte FusionCharts component using the following command:
+
+```javascript
+npm install fusioncharts svelte-fusioncharts
+```
+
+### Can I create responsive FusionCharts visualizations in Svelte?
+
+Yes. You can set the chart width as follows:
+
+```javascript
+width: '100%'
+```
+and place the chart inside a responsive container.
+
+### Can I use other FusionCharts chart types with Svelte?
+
+Yes. Change the `type` property in the chart configuration to another supported FusionCharts chart type
+
+## Share with Your Colleagues
+
+Share this tutorial with your colleagues and help them get started with interactive data visualizations using FusionCharts and Svelte.
